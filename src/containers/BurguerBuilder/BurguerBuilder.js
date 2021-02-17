@@ -30,6 +30,7 @@ class BurguerBuilder extends Component {
     },
     totalPrice: 3,
     available: false,
+    ordering: false
   };
 
   updateAvailableState (ingredients) {
@@ -70,6 +71,10 @@ class BurguerBuilder extends Component {
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
   };
 
+  orderHandler = () => {
+    this.setState({ordering: true});
+  }
+
   render() {
     const disabledInfo = {
       ...this.state.ingredients,
@@ -79,7 +84,7 @@ class BurguerBuilder extends Component {
     }
     return (
       <Aux>
-        <Model>
+        <Model show={this.state.ordering}>
           <OrderSumary ingredients={this.state.ingredients}/>
         </Model>
         <Burguer ingredients={this.state.ingredients} />
@@ -89,6 +94,7 @@ class BurguerBuilder extends Component {
           disabled={disabledInfo}
           price={this.state.totalPrice}
           available={this.state.available}
+          ordered={this.orderHandler}
         />
       </Aux>
     );
