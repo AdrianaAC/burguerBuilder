@@ -8,6 +8,8 @@ const INGREDIENT_PRICES = {
   cheese: 0.75,
   meat: 1.5,
   bacon: 1,
+  onions: 0.5,
+  tomato: 0.5,
 };
 class BurguerBuilder extends Component {
   // constructor(props) {
@@ -21,8 +23,22 @@ class BurguerBuilder extends Component {
       bacon: 0,
       cheese: 0,
       meat: 0,
+      onions: 0,
+      tomato: 0,
     },
     totalPrice: 3,
+    available: false,
+  };
+
+  updateAvailableState (ingredients) {
+    const sum = Object.keys(ingredients)
+      .map((igKey) => {
+        return ingredients[igKey];
+      })
+      .reduce((sum, ele) => {
+        return sum + ele;
+      }, 0);
+      this.setState({available: sum>0});
   };
 
   addIngredientHandler = (type) => {
@@ -36,13 +52,11 @@ class BurguerBuilder extends Component {
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+    this.updateAvailableState(updatedIngredients);
   };
 
   removeIngredientHandler = (type) => {
     const oldQtt = this.state.ingredients[type];
-    if (oldQtt <= 0) {
-      alert("There's already no " + { type } + " to remove.");
-    }
     const updatedQtt = oldQtt - 1;
     const updatedIngredients = {
       ...this.state.ingredients,
@@ -69,6 +83,7 @@ class BurguerBuilder extends Component {
           ingredientRemoved={this.removeIngredientHandler}
           disabled={disabledInfo}
           price={this.state.totalPrice}
+          available={this.state.available}
         />
       </Aux>
     );
