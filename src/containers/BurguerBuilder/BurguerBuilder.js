@@ -95,7 +95,8 @@ class BurguerBuilder extends Component {
         <Model show={this.state.ordering} modelClosed={this.orderCancelHandler}>
           <OrderSumary ingredients={this.state.ingredients} 
           orderCanceled={this.orderCancelHandler}
-          orderContinued={this.orderContinueHandler}/>
+          orderContinued={this.orderContinueHandler}
+          price={this.state.totalPrice}/>
         </Model>
         <Burguer ingredients={this.state.ingredients} />
         <BuildControls
