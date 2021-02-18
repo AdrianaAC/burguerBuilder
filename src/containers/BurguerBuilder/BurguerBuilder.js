@@ -35,7 +35,7 @@ class BurguerBuilder extends Component {
 
   updateAvailableState (ingredients) {
     const sum = Object.keys(ingredients)
-      .map((igKey) => {
+      .map(igKey => {
         return ingredients[igKey];
       })
       .reduce((sum, ele) => {
@@ -69,6 +69,7 @@ class BurguerBuilder extends Component {
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice - priceSubtraction;
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+    this.updateAvailableState(updatedIngredients);
   };
 
   orderHandler = () => {
