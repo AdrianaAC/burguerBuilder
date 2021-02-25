@@ -4,28 +4,40 @@ import Aux from "../Aux/Aux";
 
 const withErrorHandler = (WrappedComponent, axios) => {
   return class extends Component {
-      state={
-          error: null
-      }
-      componentDidMount(){
-          axios.interceptors.request.use(req => {
-              this.setState({error: null})
-              return req;
-          })
-          axios.interceptors.response.use(resp => resp, error => {
-            this.setState({error: error})
-          })
-      }
+    state = {
+      error: null,
+    };
+    componentDidMount() {
+      this.requestInterceptor = axios.interceptors.request.use((req) => {
+        this.setState({ error: null });
+        return req;
+      });
+      this.responseInterceptor = axios.interceptors.response.use(
+        (resp) => resp,
+        (error) => {
+          this.setState({ error: error });
+        }
+      );
+    }
 
-      errorConfirmedHandler = () => {
-          this.setState({error: null})
-      }
+    componentWillUnmount() { 
+      axios.interceptors.request.eject(this.requestInterceptor);
+      axios.interceptors.responset.eject(this.responseInterceptor);
+    }
+
+    errorConfirmedHandler = () => {
+      this.setState({ error: null });
+    };
 
     render() {
       return (
         <Aux>
-          <Model show={this.state.error} modalClosed={this.errorConfirmedHandler}>{this.state.error ? this.state.error.message : null}
-         </Model>
+          <Model
+            show={this.state.error}
+            modalClosed={this.errorConfirmedHandler}
+          >
+            {this.state.error ? this.state.error.message : null}
+          </Model>
           <WrappedComponent {...this.props} />
         </Aux>
       );
