@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Aux from "../../hoc/Aux/Aux";
 import Burguer from "../../components/Burguer/Burguer";
 import BuildControls from "../../components/Burguer/BuildControls/BuildControls";
-import Model from "../../components/UI/Model/Model"; 
+import Model from "../../components/UI/Model/Model";
 import OrderSumary from "../../components/Burguer/OrderSumary/OrderSumary";
 import Help from "../../components/Navigation/NavigationItems/Help/Help";
 import Spinner from "../../components/UI/Spinner/Spinner";
@@ -28,27 +28,30 @@ class BurguerBuilder extends Component {
     totalPrice: 3,
     available: false,
     ordering: false,
-    helping:false,
-    loading: false
+    helping: false,
+    loading: false,
   };
 
   componentDidMount() {
-    axios.get("https://react-burguerbuilder-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json")
-    .then(response => {
-      this.setState({ingredients: response.data});
-    });
+    axios
+      .get(
+        "https://react-burguerbuilder-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json"
+      )
+      .then((response) => { 
+        this.setState({ ingredients: response.data });
+      });
   }
 
-  updateAvailableState (ingredients) {
+  updateAvailableState(ingredients) {
     const sum = Object.keys(ingredients)
-      .map(igKey => {
+      .map((igKey) => {
         return ingredients[igKey];
       })
       .reduce((sum, ele) => {
         return sum + ele;
       }, 0);
-      this.setState({available: sum>0});
-  };
+    this.setState({ available: sum > 0 });
+  }
 
   addIngredientHandler = (type) => {
     const oldQtt = this.state.ingredients[type];
@@ -79,27 +82,25 @@ class BurguerBuilder extends Component {
   };
 
   orderHandler = () => {
-    this.setState({ordering: true});
-  }
+    this.setState({ ordering: true });
+  };
 
   helpHandler = () => {
-    this.setState({helping: true})
-  }
+    this.setState({ helping: true });
+  };
 
   orderCancelHandler = () => {
-    this.setState({ordering: false})
-  }
+    this.setState({ ordering: false });
+  };
 
-  questionClickedHandler = () => {
-
-  }
+  questionClickedHandler = () => {};
 
   helpCancelHandler = () => {
-    this.setState({helping: false})
-  }
+    this.setState({ helping: false });
+  };
 
   orderContinueHandler = () => {
-    this.setState({loading: true})
+    this.setState({ loading: true });
 
     const order = {
       ingredients: this.state.ingredients,
@@ -109,21 +110,22 @@ class BurguerBuilder extends Component {
         address: {
           street: "SesamoStreet",
           zipCode: "123456",
-          country: "Mexico"
+          country: "Mexico",
         },
-        email: "test@test.com"
+        email: "test@test.com",
       },
-      deliveryMethod: "express"
-    }
+      deliveryMethod: "express",
+    };
 
-    axios.post("/orders.json", order)
-    .then(response => {
-      this.setState({loading: false, ordering: false})
-    })
-    .catch(error => {
-      this.setState({loading: false, ordering: false})
-    });
-  }
+    axios
+      .post("/orders.json", order)
+      .then((response) => {
+        this.setState({ loading: false, ordering: false });
+      })
+      .catch((error) => {
+        this.setState({ loading: false, ordering: false });
+      });
+  };
 
   render() {
     const disabledInfo = {
@@ -133,40 +135,52 @@ class BurguerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
 
-    let orderSummary =  <OrderSumary ingredients={this.state.ingredients} 
-    orderCanceled={this.orderCancelHandler}
-    orderContinued={this.orderContinueHandler}
-    price={this.state.totalPrice}/>;
+    let orderSummary = null;
+    let burguer = <Spinner />;
 
-
-    if(this.state.loading) {
-      orderSummary = <Spinner/>;
-
+    if (this.state.ingredients) {
+      burguer = (
+        <Aux>
+          <Burguer ingredients={this.state.ingredients} />
+          <BuildControls
+            ingredientAdded={this.addIngredientHandler}
+            ingredientRemoved={this.removeIngredientHandler}
+            disabled={disabledInfo}
+            price={this.state.totalPrice}
+            available={this.state.available}
+            ordered={this.orderHandler}
+            help={this.helpHandler}
+          />
+        </Aux>
+      );
+      orderSummary = 
+        <OrderSumary
+          ingredients={this.state.ingredients}
+          orderCanceled={this.orderCancelHandler}
+          orderContinued={this.orderContinueHandler}
+          price={this.state.totalPrice}
+        />
     }
+    if (this.state.loading) {
+      orderSummary = <Spinner />;
+    }
+  
+
     return (
       <Aux>
         <Model show={this.state.ordering} modelClosed={this.orderCancelHandler}>
-         {orderSummary}
+          {orderSummary}
         </Model>
         <Model show={this.state.helping} modelClosed={this.helpCancelHandler}>
-          <Help 
-          questionClicked={this.questionClickedHandler}
-          questions={this.state.questions}/>
+          <Help
+            questionClicked={this.questionClickedHandler}
+            questions={this.state.questions}
+          />
         </Model>
-        <Burguer ingredients={this.state.ingredients} />
-        <BuildControls
-          ingredientAdded={this.addIngredientHandler}
-          ingredientRemoved={this.removeIngredientHandler}
-          disabled={disabledInfo}
-          price={this.state.totalPrice}
-          available={this.state.available}
-          ordered={this.orderHandler}
-          help = {this.helpHandler}
-        />
+        {burguer}
       </Aux>
     );
   }
 }
-
 
 export default withErrorHandle(BurguerBuilder, axios);
