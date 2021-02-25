@@ -1,0 +1,26 @@
+.title{
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.question{
+    text-align: left;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+
+}
+
+.answer{
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+}
+
+.helpSection{
+    background-color: #62CD90;
+    color: #1A697F;
+    height: fit-content;
+}

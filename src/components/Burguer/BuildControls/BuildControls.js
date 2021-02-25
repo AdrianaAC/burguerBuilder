@@ -33,6 +33,9 @@ const buildControls = (props) => {
       >
         Place your order
       </button>
+      <button onClick={props.help} className={classes.OrderButton}>
+        help
+      </button>
     </div>
   );
 };
