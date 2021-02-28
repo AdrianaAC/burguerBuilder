@@ -9,11 +9,20 @@ state={
         cheese:1
     }
 }
+checkoutCancelHandler = () => {
+this.props.history.goBack();
+}
+checkoutContinueHandler = () => {
+    this.props.history.replace("/checkout/checkout-form");
+}
     
 render() {
     return(
         <div>
-            <CheckoutSummary ingredients={this.state.ingredients}/>
+            <CheckoutSummary 
+            ingredients={this.state.ingredients}
+            checkoutCancel={this.checkoutCancelHandler}
+            checkoutContinue={this.checkoutContinueHandler}/>
         </div>
 
     );

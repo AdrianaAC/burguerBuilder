@@ -33,6 +33,7 @@ class BurguerBuilder extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props);
     axios
       .get(
         "https://react-burguerbuilder-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json"
@@ -100,31 +101,32 @@ class BurguerBuilder extends Component {
   };
 
   orderContinueHandler = () => {
-    this.setState({ loading: true });
+    this.props.history.push("/checkout");
+    // this.setState({ loading: true });
 
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Consuela",
-        address: {
-          street: "SesamoStreet",
-          zipCode: "123456",
-          country: "Mexico",
-        },
-        email: "test@test.com",
-      },
-      deliveryMethod: "express",
-    };
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: "Consuela",
+    //     address: {
+    //       street: "SesamoStreet",
+    //       zipCode: "123456",
+    //       country: "Mexico",
+    //     },
+    //     email: "test@test.com",
+    //   },
+    //   deliveryMethod: "express",
+    // };
 
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        this.setState({ loading: false, ordering: false });
-      })
-      .catch((error) => {
-        this.setState({ loading: false, ordering: false });
-      });
+    // axios
+    //   .post("/orders.json", order)
+    //   .then((response) => {
+    //     this.setState({ loading: false, ordering: false });
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ loading: false, ordering: false });
+    //   });
   };
 
   render() {
@@ -183,4 +185,4 @@ class BurguerBuilder extends Component {
   }
 }
 
-export default withErrorHandle(BurguerBuilder, axios);
+export default BurguerBuilder;
