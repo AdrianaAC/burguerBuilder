@@ -57,12 +57,12 @@ class Help extends Component{
   render() {
     const questionsSumary = faqArray.map((qid) => {
       return (
-        <div>
-        <p key={qid} className={classes.question}>
-          {qid.question}
-        </p>
-        <p className = {classes.answer}>{qid.answer}</p>
-        <hr/>
+        <div key={qid.id}>
+          <p className={classes.question}>
+            {qid.question}
+          </p>
+          <p className = {classes.answer}>{qid.answer}</p>
+          <hr/>
         </div>
       );
     });
@@ -71,7 +71,7 @@ class Help extends Component{
       <div className={classes.helpSection}>
           <h3 className={classes.title}>FAQ</h3>
           {/* <Question onClick={() => {console.log("clicked!")}}/> */}
-          <p onClick={this.questionClickHandler}>{questionsSumary}</p>
+          <div onClick={this.questionClickHandler}>{questionsSumary}</div>
           <p>Contact form</p>
           {/* <Answer /> */}
          

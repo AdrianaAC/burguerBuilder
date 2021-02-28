@@ -4,7 +4,7 @@ import Burguer from "../../components/Burguer/Burguer";
 import BuildControls from "../../components/Burguer/BuildControls/BuildControls";
 import Model from "../../components/UI/Model/Model";
 import OrderSumary from "../../components/Burguer/OrderSumary/OrderSumary";
-import Help from "../../components/Navigation/NavigationItems/Help/Help";
+// import Help from "../../components/Navigation/NavigationItems/Help/Help";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandle from "../../hoc/withErrorHandle/withErrorHandle";
 import axios from "../../axios-orders";
@@ -171,12 +171,12 @@ class BurguerBuilder extends Component {
         <Model show={this.state.ordering} modelClosed={this.orderCancelHandler}>
           {orderSummary}
         </Model>
-        <Model show={this.state.helping} modelClosed={this.helpCancelHandler}>
+        {/* <Model show={this.state.helping} modelClosed={this.helpCancelHandler}>
           <Help
             questionClicked={this.questionClickedHandler}
             questions={this.state.questions}
-          />
-        </Model>
+          /> */}
+        {/* </Model> */}
         {burguer}
       </Aux>
     );
