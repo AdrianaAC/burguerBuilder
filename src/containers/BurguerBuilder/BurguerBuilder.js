@@ -6,7 +6,7 @@ import Model from "../../components/UI/Model/Model";
 import OrderSumary from "../../components/Burguer/OrderSumary/OrderSumary";
 // import Help from "../../components/Navigation/NavigationItems/Help/Help";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import withErrorHandle from "../../hoc/withErrorHandle/withErrorHandle";
+// import withErrorHandle from "../../hoc/withErrorHandle/withErrorHandle";
 import axios from "../../axios-orders";
 
 const INGREDIENT_PRICES = {
@@ -101,7 +101,18 @@ class BurguerBuilder extends Component {
   };
 
   orderContinueHandler = () => {
-    this.props.history.push("/checkout");
+
+    const queryParams = [];
+    for(let i in this.state.ingredients) {
+      queryParams.push(encodeURIComponent(i) + "=" + encodeURIComponent(this.state.ingredients[i]));
+    }
+
+    const queryString =  queryParams.join("&");
+
+    this.props.history.push({
+      pathname: "/checkout",
+      search:"?" + queryString
+    });
     // this.setState({ loading: true });
 
     // const order = {
