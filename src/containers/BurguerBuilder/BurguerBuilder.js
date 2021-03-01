@@ -107,37 +107,12 @@ class BurguerBuilder extends Component {
       queryParams.push(encodeURIComponent(i) + "=" + encodeURIComponent(this.state.ingredients[i]));
     }
 
+    queryParams.push("price=" + this.state.totalPrice);
     const queryString =  queryParams.join("&");
-
     this.props.history.push({
       pathname: "/checkout",
       search:"?" + queryString
     });
-    // this.setState({ loading: true });
-
-    // const order = {
-    //   ingredients: this.state.ingredients,
-    //   price: this.state.totalPrice,
-    //   customer: {
-    //     name: "Consuela",
-    //     address: {
-    //       street: "SesamoStreet",
-    //       zipCode: "123456",
-    //       country: "Mexico",
-    //     },
-    //     email: "test@test.com",
-    //   },
-    //   deliveryMethod: "express",
-    // };
-
-    // axios
-    //   .post("/orders.json", order)
-    //   .then((response) => {
-    //     this.setState({ loading: false, ordering: false });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ loading: false, ordering: false });
-    //   });
   };
 
   render() {
