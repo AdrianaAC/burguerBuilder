@@ -87,18 +87,17 @@ class ContactData extends Component {
       for (let key in this.state.orderForm) {
         formElementsArray.push({
           id: key,
-          config: this.state.orderFrom[key]
+          config: this.state.orderForm[key]
         })
       }
         let form = (   
         <form>
                 {formElementsArray.map(formElement => (
                   <Input  
-                  
                   key = {formElement.id}
                   elementType={formElement.config.elementType}
                   elementConfig={formElement.config.elementConfig}
-                  value={formElement.config.value
+                  value={formElement.config.value}
                   />
                 ))}
                 <Button buttonType="Success" clicked={this.orderHandler}>Submit data</Button>
