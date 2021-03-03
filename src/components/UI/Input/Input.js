@@ -5,7 +5,7 @@ const input = (props) => {
   let inputElement = null;
   const inputClasses = [classes.InputElement];
 
-  if(props.invalid && props.shouldValidate) {
+  if(props.invalid && props.shouldValidate && props.touched) {
     inputClasses.push(classes.Invalid);
   }
 
@@ -58,7 +58,7 @@ const input = (props) => {
   }
 
   return (
-    <div className={inputClasses.join(" ")}>
+    <div className={classes.Input}>
       <label className={classes.Label}>{props.label}</label>
       {inputElement}
     </div>
