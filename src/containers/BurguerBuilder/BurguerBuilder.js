@@ -9,6 +9,8 @@ import Privacy from "../../components/Navigation/NavigationItems/Privacy/Privacy
 import OrderSumary from "../../components/Burguer/OrderSumary/OrderSumary";
 // import withErrorHandle from "../../hoc/withErrorHandle/withErrorHandle";
 import axios from "../../axios-orders";
+import { connect } from "react-redux";
+import * as actionTypes from "../../store/actions";
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -25,7 +27,6 @@ class BurguerBuilder extends Component {
   //   }
 
   state = {
-    ingredients: null,
     totalPrice: 3,
     available: false,
     ordering: false,
@@ -127,7 +128,7 @@ class BurguerBuilder extends Component {
 
   render() {
     const disabledInfo = {
-      ...this.state.ingredients,
+      ...this.props.ings
     };
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
@@ -136,13 +137,13 @@ class BurguerBuilder extends Component {
     let orderSummary = null;
     let burguer = <Spinner />;
 
-    if (this.state.ingredients) {
+    if (this.props.ings) {
       burguer = (
         <Aux>
-          <Burguer ingredients={this.state.ingredients} />
+          <Burguer ingredients={this.props.ings} />
           <BuildControls
-            ingredientAdded={this.addIngredientHandler}
-            ingredientRemoved={this.removeIngredientHandler}
+            ingredientAdded={this.props.onIngredientAdded}
+            ingredientRemoved={this.props.onIngredientRemoved}
             disabled={disabledInfo}
             price={this.state.totalPrice}
             available={this.state.available}
@@ -154,7 +155,7 @@ class BurguerBuilder extends Component {
       );
       orderSummary = 
         <OrderSumary
-          ingredients={this.state.ingredients}
+          ingredients={this.props.ings}
           orderCanceled={this.orderCancelHandler}
           orderContinued={this.orderContinueHandler}
           price={this.state.totalPrice}
@@ -186,4 +187,17 @@ class BurguerBuilder extends Component {
   }
 }
 
-export default BurguerBuilder;
+const mapStateToProps = state => {
+  return {
+    ings: state.ingredients
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onIngredientAdded: (ingName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }),
+    onIngredientRemoved: (ingName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BurguerBuilder);
