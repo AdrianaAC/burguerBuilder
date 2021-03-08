@@ -19,7 +19,6 @@ class BurguerBuilder extends Component {
   //   }
 
   state = {
-    available: false,
     ordering: false,
     helping: false,
     loading: false,
@@ -45,7 +44,7 @@ class BurguerBuilder extends Component {
       .reduce((sum, ele) => {
         return sum + ele;
       }, 0);
-    this.setState({ available: sum > 0 });
+      return sum > 0;
   }
 
   
@@ -110,7 +109,7 @@ class BurguerBuilder extends Component {
             ingredientRemoved={this.props.onIngredientRemoved}
             disabled={disabledInfo}
             price={this.props.price}
-            available={this.state.available}
+            available={this.updateAvailableState(this.props.ings)}
             ordered={this.orderHandler}
             help={this.helpHandler}
             privacy={this.privacyHandler}
