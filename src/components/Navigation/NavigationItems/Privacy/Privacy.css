@@ -1,0 +1,48 @@
+.title{
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.question{
+    text-align: left;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+
+}
+
+.answer{
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    padding-left: 7px;
+}
+
+.privacySection{
+    background-color: #62CD90;
+    color: #1A697F;
+}
+
+.name {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 17px;
+    font-weight: bolder;
+    color:white;
+}
+
+.indice{
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+}
+
+.line {
+    height: 2px;
+    color: #1A697F;
+    width: 75%;
+    background-color: #1A697F;
+    border-color: #1A697F;
+}
