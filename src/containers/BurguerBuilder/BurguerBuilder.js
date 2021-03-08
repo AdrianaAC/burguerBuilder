@@ -12,14 +12,6 @@ import axios from "../../axios-orders";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions";
 
-const INGREDIENT_PRICES = {
-  salad: 0.5,
-  cheese: 0.75,
-  meat: 1.5,
-  bacon: 1,
-  onions: 0.5,
-  tomato: 0.5,
-};
 class BurguerBuilder extends Component {
   // constructor(props) {
   //   super(props);
@@ -27,7 +19,6 @@ class BurguerBuilder extends Component {
   //   }
 
   state = {
-    totalPrice: 3,
     available: false,
     ordering: false,
     helping: false,
@@ -57,34 +48,7 @@ class BurguerBuilder extends Component {
     this.setState({ available: sum > 0 });
   }
 
-  addIngredientHandler = (type) => {
-    const oldQtt = this.state.ingredients[type];
-    const updatedQtt = oldQtt + 1;
-    const updatedIngredients = {
-      ...this.state.ingredients,
-    };
-    updatedIngredients[type] = updatedQtt;
-    const priceAddition = INGREDIENT_PRICES[type];
-    const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice + priceAddition;
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-    this.updateAvailableState(updatedIngredients);
-  };
-
-  removeIngredientHandler = (type) => {
-    const oldQtt = this.state.ingredients[type];
-    const updatedQtt = oldQtt - 1;
-    const updatedIngredients = {
-      ...this.state.ingredients,
-    };
-    updatedIngredients[type] = updatedQtt;
-    const priceSubtraction = INGREDIENT_PRICES[type];
-    const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice - priceSubtraction;
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-    this.updateAvailableState(updatedIngredients);
-  };
-
+  
   orderHandler = () => {
     this.setState({ ordering: true });
   };
@@ -145,7 +109,7 @@ class BurguerBuilder extends Component {
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
             disabled={disabledInfo}
-            price={this.state.totalPrice}
+            price={this.props.price}
             available={this.state.available}
             ordered={this.orderHandler}
             help={this.helpHandler}
@@ -158,7 +122,7 @@ class BurguerBuilder extends Component {
           ingredients={this.props.ings}
           orderCanceled={this.orderCancelHandler}
           orderContinued={this.orderContinueHandler}
-          price={this.state.totalPrice}
+          price={this.props.price}
         />
     }
     if (this.state.loading) {
@@ -189,7 +153,8 @@ class BurguerBuilder extends Component {
 
 const mapStateToProps = state => {
   return {
-    ings: state.ingredients
+    ings: state.ingredients,
+    price: state.totalPrice
   }
 }
 
