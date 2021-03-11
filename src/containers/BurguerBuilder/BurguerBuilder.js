@@ -39,10 +39,9 @@ class BurguerBuilder extends Component {
       .reduce((sum, ele) => {
         return sum + ele;
       }, 0);
-      return sum > 0;
+    return sum > 0;
   }
 
-  
   orderHandler = () => {
     this.setState({ ordering: true });
   };
@@ -52,8 +51,8 @@ class BurguerBuilder extends Component {
   };
 
   privacyHandler = () => {
-    this.setState({privacy: true})
-  }
+    this.setState({ privacy: true });
+  };
 
   orderCancelHandler = () => {
     this.setState({ ordering: false });
@@ -66,24 +65,27 @@ class BurguerBuilder extends Component {
   };
 
   privacyCancelHandler = () => {
-    this.setState({privacy: false})
-  }
+    this.setState({ privacy: false });
+  };
 
   orderContinueHandler = () => {
-
     this.props.history.push("/checkout");
   };
 
   render() {
     const disabledInfo = {
-      ...this.props.ings
+      ...this.props.ings,
     };
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
 
     let orderSummary = null;
-    let burguer = this.props.error ? <p>Ingredient's can't be loaded. Try again</p> : <Spinner />;
+    let burguer = this.props.error ? (
+      <p>Ingredient's can't be loaded. Try again</p>
+    ) : (
+      <Spinner />
+    );
 
     if (this.props.ings) {
       burguer = (
@@ -101,15 +103,15 @@ class BurguerBuilder extends Component {
           />
         </Aux>
       );
-      orderSummary = 
+      orderSummary = (
         <OrderSumary
           ingredients={this.props.ings}
           orderCanceled={this.orderCancelHandler}
           orderContinued={this.orderContinueHandler}
           price={this.props.price}
         />
+      );
     }
-   
 
     return (
       <Aux>
@@ -121,31 +123,39 @@ class BurguerBuilder extends Component {
             questionClicked={this.questionClickedHandler}
             questions={this.state.questions}
           />
-       </Model>
+        </Model>
 
-       <Model show={this.state.privacy} modelClosed={this.privacyCancelHandler}>
-         <Privacy />
-       </Model>
+        <Model
+          show={this.state.privacy}
+          modelClosed={this.privacyCancelHandler}
+        >
+          <Privacy />
+        </Model>
         {burguer}
       </Aux>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice,
-     error: state.error
-  }
-}
+    ings: state.burguerBuilder.ingredients,
+    price: state.burguerBuilder.totalPrice,
+    error: state.burguerBuilder.error,
+  };
+};
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onIngredientAdded: (ingName) => dispatch(burguerBuilderActions.addIngredient(ingName)),
-    onIngredientRemoved: (ingName) => dispatch(burguerBuilderActions.removeIngredient(ingName)),
-    onInitIngredients: () => dispatch(burguerBuilderActions.initIngredients())
-  }
-}
+    onIngredientAdded: (ingName) =>
+      dispatch(burguerBuilderActions.addIngredient(ingName)),
+    onIngredientRemoved: (ingName) =>
+      dispatch(burguerBuilderActions.removeIngredient(ingName)),
+    onInitIngredients: () => dispatch(burguerBuilderActions.initIngredients()),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(BurguerBuilder, axios);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  BurguerBuilder,
+  axios
+);
