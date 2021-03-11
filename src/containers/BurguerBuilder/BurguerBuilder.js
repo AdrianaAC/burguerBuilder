@@ -8,9 +8,10 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import Privacy from "../../components/Navigation/NavigationItems/Privacy/Privacy";
 import OrderSumary from "../../components/Burguer/OrderSumary/OrderSumary";
 // import withErrorHandle from "../../hoc/withErrorHandle/withErrorHandle";
-import axios from "../../axios-orders";
+
 import { connect } from "react-redux";
 import * as burguerBuilderActions from "../../store/actions/index";
+import axios from "axios";
 
 class BurguerBuilder extends Component {
   // constructor(props) {
@@ -27,13 +28,7 @@ class BurguerBuilder extends Component {
 
   componentDidMount() {
     console.log(this.props);
-    axios
-      .get(
-        "https://react-burguerbuilder-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json"
-      )
-      .then((response) => { 
-        this.setState({ ingredients: response.data });
-      });
+    this.props.onInitIngredients();
   }
 
   updateAvailableState(ingredients) {
@@ -88,7 +83,7 @@ class BurguerBuilder extends Component {
     }
 
     let orderSummary = null;
-    let burguer = <Spinner />;
+    let burguer = this.props.error ? <p>Ingredient's can't be loaded. Try again</p> : <Spinner />;
 
     if (this.props.ings) {
       burguer = (
@@ -114,10 +109,7 @@ class BurguerBuilder extends Component {
           price={this.props.price}
         />
     }
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
-    }
-  
+   
 
     return (
       <Aux>
@@ -143,15 +135,17 @@ class BurguerBuilder extends Component {
 const mapStateToProps = state => {
   return {
     ings: state.ingredients,
-    price: state.totalPrice
+    price: state.totalPrice,
+     error: state.error
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onIngredientAdded: (ingName) => dispatch(burguerBuilderActions.addIngredient(ingName)),
-    onIngredientRemoved: (ingName) => dispatch(burguerBuilderActions.removeIngredient(ingName))
+    onIngredientRemoved: (ingName) => dispatch(burguerBuilderActions.removeIngredient(ingName)),
+    onInitIngredients: () => dispatch(burguerBuilderActions.initIngredients())
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BurguerBuilder);
+export default connect(mapStateToProps, mapDispatchToProps)(BurguerBuilder, axios);
