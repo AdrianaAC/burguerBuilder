@@ -69,6 +69,7 @@ class BurguerBuilder extends Component {
   };
 
   orderContinueHandler = () => {
+    this.props.onInitPurchase();
     this.props.history.push("/checkout");
   };
 
@@ -152,6 +153,7 @@ const mapDispatchToProps = (dispatch) => {
     onIngredientRemoved: (ingName) =>
       dispatch(burguerBuilderActions.removeIngredient(ingName)),
     onInitIngredients: () => dispatch(burguerBuilderActions.initIngredients()),
+    onInitPurchase: () => dispatch(burguerBuilderActions.purchaseInit)
   };
 };
 
