@@ -48,21 +48,24 @@ const faqArray = [
 
 class Help extends Component{
   state= {
-    showingAnswer: false
+    showingAnswer: false, 
+    questionId: 0
   }
 
-  questionClickHandler = () => {
-    this.setState({showingAnswer: true})
+  questionClickHandler = (id) => {
+    console.log(id)
+    this.setState({showingAnswer: true, questionId: id})
+
   }
   render() {
+    console.log(this.state)
     const questionsSumary = faqArray.map((qid) => {
       return (
         <div key={qid.id}>
-          <p className={classes.question}>
+          <p className={classes.question} onClick ={() => {this.questionClickHandler(qid.id)}}>
             {qid.question}
           </p>
-          <p className = {classes.answer}>{qid.answer}</p>
-          <hr/>
+          {qid.id === this.state.questionId ? <p className = {classes.answer}>{qid.answer}</p> : null}
         </div>
       );
     });
@@ -71,7 +74,7 @@ class Help extends Component{
       <div className={classes.helpSection}>
           <h3 className={classes.title}>FAQ</h3>
           {/* <Question onClick={() => {console.log("clicked!")}}/> */}
-          <div onClick={this.questionClickHandler}>{questionsSumary}</div>
+          <div >{questionsSumary}</div>
           <p>Contact form</p>
           {/* <Answer /> */}
          
