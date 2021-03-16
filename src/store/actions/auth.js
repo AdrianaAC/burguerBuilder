@@ -31,10 +31,10 @@ export const auth = (email, password, isSignup) => {
             returnSecureToken: true
 
         };
-        let url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=AIzaSyD5ZexuqdxidytqdwdPEdKw9LH5K2sI1h4";
+        let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD5ZexuqdxidytqdwdPEdKw9LH5K2sI1h4";
 
         if(!isSignup) {
-            url="https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=AIzaSyD5ZexuqdxidytqdwdPEdKw9LH5K2sI1h4"
+            url="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD5ZexuqdxidytqdwdPEdKw9LH5K2sI1h4"
         }
         axios.post(url, authData)
             .then(response => {
