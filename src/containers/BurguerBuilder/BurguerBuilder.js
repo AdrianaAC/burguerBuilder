@@ -3,15 +3,15 @@ import Aux from "../../hoc/Aux/Aux";
 import Burguer from "../../components/Burguer/Burguer";
 import BuildControls from "../../components/Burguer/BuildControls/BuildControls";
 import Model from "../../components/UI/Model/Model";
-import Help from "../../components/Navigation/NavigationItems/Help/Help";
+//import Help from "../../components/Navigation/NavigationItems/Help/Help";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import Privacy from "../../components/Navigation/NavigationItems/Privacy/Privacy";
+//import Privacy from "../../components/Navigation/NavigationItems/Privacy/Privacy";
 import OrderSumary from "../../components/Burguer/OrderSumary/OrderSumary";
 // import withErrorHandle from "../../hoc/withErrorHandle/withErrorHandle";
 
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
-import axios from "axios";
+//import axios from "axios";
 
 class BurguerBuilder extends Component {
   // constructor(props) {
@@ -43,7 +43,11 @@ class BurguerBuilder extends Component {
   }
 
   orderHandler = () => {
-    this.setState({ ordering: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ ordering: true });
+    } else {
+      this.props.history.push("/auth");
+    }
   };
 
   helpHandler = () => {
@@ -99,6 +103,7 @@ class BurguerBuilder extends Component {
             price={this.props.price}
             available={this.updateAvailableState(this.props.ings)}
             ordered={this.orderHandler}
+            isAuth={this.props.isAuthenticated}
             help={this.helpHandler}
             privacy={this.privacyHandler}
           />
@@ -119,7 +124,7 @@ class BurguerBuilder extends Component {
         <Model show={this.state.ordering} modelClosed={this.orderCancelHandler}>
           {orderSummary}
         </Model>
-        <Model show={this.state.helping} modelClosed={this.helpCancelHandler}>
+        {/* <Model show={this.state.helping} modelClosed={this.helpCancelHandler}>
           <Help
             questionClicked={this.questionClickedHandler}
             questions={this.state.questions}
@@ -131,7 +136,7 @@ class BurguerBuilder extends Component {
           modelClosed={this.privacyCancelHandler}
         >
           <Privacy />
-        </Model>
+        </Model> */}
         {burguer}
       </Aux>
     );
@@ -143,19 +148,18 @@ const mapStateToProps = (state) => {
     ings: state.burguerBuilder.ingredients,
     price: state.burguerBuilder.totalPrice,
     error: state.burguerBuilder.error,
+    isAuthenticated: state.auth.token !== null,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onIngredientAdded: (ingName) =>
-      dispatch(actions.addIngredient(ingName)),
+    onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
     onIngredientRemoved: (ingName) =>
       dispatch(actions.removeIngredient(ingName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
-    onInitPurchase: () => dispatch(actions.purchaseInit)
+    onInitPurchase: () => dispatch(actions.purchaseInit),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  BurguerBuilder)
+export default connect(mapStateToProps, mapDispatchToProps)(BurguerBuilder);

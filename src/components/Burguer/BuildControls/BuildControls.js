@@ -31,16 +31,13 @@ const buildControls = (props) => {
         disabled={!props.available}
         onClick={props.ordered}
       >
-        Place your order
+        {props.isAuth ? "Place your order" : "Sign in to order"}
       </button>
 
-
-
-      
-      <button onClick={props.help} className={classes.OrderButton}>
+      {/* <button onClick={props.help} className={classes.OrderButton}>
         help
       </button>
-      <button onClick={props.privacy} className={classes.OrderButton}>privacy</button>
+      <button onClick={props.privacy} className={classes.OrderButton}>privacy</button> */}
     </div>
   );
 };
