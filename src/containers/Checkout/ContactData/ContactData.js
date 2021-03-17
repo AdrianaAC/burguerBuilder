@@ -4,8 +4,8 @@ import classes from "./ContactData.css";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import { connect } from "react-redux";
-import axios from "../../../axios-orders";
-import withErrorHandle from "../../../hoc/withErrorHandle/withErrorHandle";
+//import axios from "../../../axios-orders";
+//import withErrorHandle from "../../../hoc/withErrorHandle/withErrorHandle";
 import * as actions from "../../../store/actions/index";
 
 class ContactData extends Component {
@@ -110,7 +110,7 @@ class ContactData extends Component {
       orderData: formData,
     };
 
-    this.props.onOrderBurguer(order);
+    this.props.onOrderBurguer(order, this.props.token);
   };
 
   checkValidity(value, rules) {
@@ -202,12 +202,13 @@ const mapStateToProps = (state) => {
     ings: state.burguerBuilder.ingredients,
     price: state.burguerBuilder.totalPrice,
     loading: state.order.loading,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrderBurguer: (orderData) => dispatch(actions.purchaseBurguer(orderData)),
+    onOrderBurguer: (orderData, token) => dispatch(actions.purchaseBurguer(orderData, token)),
   };
 };
 
