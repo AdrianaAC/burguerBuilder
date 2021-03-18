@@ -9,7 +9,6 @@ class Model extends Component {
   }
 
   componentDidUpdate() {
-    console.log("[Model] DidUpdate");
   }
   render() {
     return (

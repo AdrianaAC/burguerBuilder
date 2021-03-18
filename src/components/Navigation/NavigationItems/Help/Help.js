@@ -53,12 +53,11 @@ class Help extends Component{
   }
 
   questionClickHandler = (id) => {
-    console.log(id)
+
     this.setState({showingAnswer: true, questionId: id})
 
   }
   render() {
-    console.log(this.state)
     const questionsSumary = faqArray.map((qid) => {
       return (
         <div key={qid.id}>
@@ -73,10 +72,8 @@ class Help extends Component{
     return (
       <div className={classes.helpSection}>
           <h3 className={classes.title}>FAQ</h3>
-          {/* <Question onClick={() => {console.log("clicked!")}}/> */}
           <div >{questionsSumary}</div>
           <p>Contact form</p>
-          {/* <Answer /> */}
          
       </div>
   )
