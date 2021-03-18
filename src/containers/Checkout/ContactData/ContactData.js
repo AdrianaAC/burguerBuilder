@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 //import axios from "../../../axios-orders";
 //import withErrorHandle from "../../../hoc/withErrorHandle/withErrorHandle";
 import * as actions from "../../../store/actions/index";
+import { updateObject } from "../../../shared/utility";
 
 class ContactData extends Component {
   state = {
@@ -108,7 +109,7 @@ class ContactData extends Component {
       ingredients: this.props.ings,
       price: this.props.price,
       orderData: formData,
-      userId: this.props.userId
+      userId: this.props.userId,
     };
 
     this.props.onOrderBurguer(order, this.props.token);
@@ -136,21 +137,21 @@ class ContactData extends Component {
   }
 
   inputChangeHandler = (event, inputIdentifier) => {
-    const updatedOrderForm = {
-      ...this.state.orderForm,
-    };
-
-    const updatedFormElement = {
-      ...updatedOrderForm[inputIdentifier],
-    };
-
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
+    const updatedFormElement = updateObject(
+      this.state.orderForm[inputIdentifier],
+      {
+        value: event.target.value,
+        valid: this.checkValidity(
+          event.target.value,
+          this.state.orderForm[inputIdentifier].validation
+        ),
+        touched: true,
+      }
     );
-    updatedFormElement.touched = true;
-    updatedOrderForm[inputIdentifier] = updatedFormElement;
+
+    const updatedOrderForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updatedFormElement,
+    });
 
     let formIsValid = true;
     for (let inputIdentifier in updatedOrderForm) {
@@ -204,17 +205,15 @@ const mapStateToProps = (state) => {
     price: state.burguerBuilder.totalPrice,
     loading: state.order.loading,
     token: state.auth.token,
-    userId: state.auth.userId
+    userId: state.auth.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrderBurguer: (orderData, token) => dispatch(actions.purchaseBurguer(orderData, token)),
+    onOrderBurguer: (orderData, token) =>
+      dispatch(actions.purchaseBurguer(orderData, token)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ContactData)
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
