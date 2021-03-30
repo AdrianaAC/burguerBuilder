@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Button from "../../../components/UI/Button/Button";
 import classes from "./ContactData.css";
 import Spinner from "../../../components/UI/Spinner/Spinner";
@@ -9,9 +9,8 @@ import { connect } from "react-redux";
 import * as actions from "../../../store/actions/index";
 import { updateObject, checkValidity } from "../../../shared/utility";
 
-class ContactData extends Component {
-  state = {
-    orderForm: {
+const contactData = props => {
+ const [orderForm, setOrderForm] = useState({
       name: {
         elementType: "input",
         elementConfig: {
@@ -90,45 +89,45 @@ class ContactData extends Component {
         value: "fastest",
         validation: {},
         valid: true,
-      },
-    },
-    formIsValid: false,
-  };
+      }
+    })
+    const [formIsValid, setFormIsValid] = useState(false);
 
-  orderHandler = (event) => {
+
+  const orderHandler = (event) => {
     event.preventDefault();
 
     const formData = {};
-    for (let formElementIdentifier in this.state.orderForm) {
-      formData[formElementIdentifier] = this.state.orderForm[
+    for (let formElementIdentifier in orderForm) {
+      formData[formElementIdentifier] = orderForm[
         formElementIdentifier
       ].value;
     }
 
     const order = {
-      ingredients: this.props.ings,
-      price: this.props.price,
+      ingredients:props.ings,
+      price: props.price,
       orderData: formData,
-      userId: this.props.userId,
+      userId: props.userId,
     };
 
-    this.props.onOrderBurguer(order, this.props.token);
+    props.onOrderBurguer(order, props.token);
   };
 
-  inputChangeHandler = (event, inputIdentifier) => {
+  const inputChangeHandler = (event, inputIdentifier) => {
     const updatedFormElement = updateObject(
-      this.state.orderForm[inputIdentifier],
+      orderForm[inputIdentifier],
       {
         value: event.target.value,
         valid: checkValidity(
           event.target.value,
-          this.state.orderForm[inputIdentifier].validation
+          orderForm[inputIdentifier].validation
         ),
         touched: true,
       }
     );
 
-    const updatedOrderForm = updateObject(this.state.orderForm, {
+    const updatedOrderForm = updateObject(orderForm, {
       [inputIdentifier]: updatedFormElement,
     });
 
@@ -136,19 +135,20 @@ class ContactData extends Component {
     for (let inputIdentifier in updatedOrderForm) {
       formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
     }
-    this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
+    setOrderForm(updatedOrderForm);
+    setFormIsValid(formIsValid)
   };
 
-  render() {
+ 
     const formElementsArray = [];
-    for (let key in this.state.orderForm) {
+    for (let key in orderForm) {
       formElementsArray.push({
         id: key,
-        config: this.state.orderForm[key],
+        config: orderForm[key],
       });
     }
     let form = (
-      <form onSubmit={this.orderHandler}>
+      <form onSubmit={orderHandler}>
         {formElementsArray.map((formElement) => (
           <Input
             key={formElement.id}
@@ -158,10 +158,10 @@ class ContactData extends Component {
             invalid={!formElement.config.valid}
             shouldValidate={formElement.config.validation}
             touched={formElement.config.touched}
-            changed={(event) => this.inputChangeHandler(event, formElement.id)}
+            changed={(event) => inputChangeHandler(event, formElement.id)}
           />
         ))}
-        <Button buttonType="Success" disabled={!this.state.formIsValid}>
+        <Button buttonType="Success" disabled={!formIsValid}>
           Submit data
         </Button>
       </form>
@@ -176,7 +176,7 @@ class ContactData extends Component {
       </div>
     );
   }
-}
+
 
 const mapStateToProps = (state) => {
   return {
@@ -195,4 +195,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
+export default connect(mapStateToProps, mapDispatchToProps)(contactData);
