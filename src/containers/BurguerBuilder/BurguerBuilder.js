@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import Aux from '../../hoc/Aux/Aux';
-import Burger from '../../components/Burger/Burger';
-import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import Modal from '../../components/UI/Modal/Modal';
-import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Burguer from '../../components/Burguer/Burguer';
+import BuildControls from '../../components/Burguer/BuildControls/BuildControls';
+import Model from '../../components/UI/Model/Model';
+import OrderSumary from '../../components/Burguer/OrderSumary/OrderSumary';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import * as actions from '../../store/actions/index';
-import axios from '../../axios-orders';
 
-const burgerBuilder = props => {
+import * as actions from '../../store/actions/index';
+
+
+const burguerBuilder = props => {
   // constructor(props) {
   //     super(props);
   //     this.state = {...}
@@ -58,12 +58,12 @@ const burgerBuilder = props => {
     disabledInfo[key] = disabledInfo[key] <= 0;
   }
   let orderSummary = null;
-  let burger = props.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
+  let burguer = props.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
 
   if (props.ings) {
-    burger = (
+    burguer = (
       <Aux>
-        <Burger ingredients={props.ings} />
+        <Burguer ingredients={props.ings} />
         <BuildControls
           ingredientAdded={props.onIngredientAdded}
           ingredientRemoved={props.onIngredientRemoved}
@@ -76,7 +76,7 @@ const burgerBuilder = props => {
       </Aux>
     );
     orderSummary = (
-      <OrderSummary
+      <OrderSumary
         ingredients={props.ings}
         price={props.price}
         purchaseCancelled={purchaseCancelHandler}
@@ -87,22 +87,22 @@ const burgerBuilder = props => {
   // {salad: true, meat: false, ...}
   return (
     <Aux>
-      <Modal
+      <Model
         show={purchasing}
-        modalClosed={purchaseCancelHandler}
+        modelClosed={purchaseCancelHandler}
       >
         {orderSummary}
-      </Modal>
-      {burger}
+      </Model>
+      {burguer}
     </Aux>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    ings: state.burgerBuilder.ingredients,
-    price: state.burgerBuilder.totalPrice,
-    error: state.burgerBuilder.error,
+    ings: state.burguerBuilder.ingredients,
+    price: state.burguerBuilder.totalPrice,
+    error: state.burguerBuilder.error,
     isAuthenticated: state.auth.token !== null
   };
 };
@@ -120,4 +120,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withErrorHandler(burgerBuilder, axios));
+)(burguerBuilder);

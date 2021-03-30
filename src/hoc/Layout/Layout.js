@@ -28,7 +28,7 @@ const layout = (props) => {
         open={sideDrawerIsVisible}
         isAuth={props.isAuthenticated}
       />
-      <main className={classes.Content}>{this.props.children}</main>
+      <main className={classes.Content}>{props.children}</main>
     </Aux>
   );
 };
