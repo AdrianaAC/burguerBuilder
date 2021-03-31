@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable default-case */
-import React, { Component } from "react";
+import React from "react";
 import classes from "./BurguerIngredient.css";
 import PropTypes from "prop-types";
 
-class BurguerIngredient extends Component {
-  render() {
+const burguerIngredient = props => {
+ 
     let ingredient = null;
 
-    switch (this.props.type) {
+    switch (props.type) {
       case "bread-bottom":
         ingredient = <div className={classes.BreadBottom}></div>;
         break;
@@ -51,10 +51,10 @@ class BurguerIngredient extends Component {
     }
     return ingredient;
   }
-}
 
-BurguerIngredient.propTypes = {
+
+burguerIngredient.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-export default BurguerIngredient;
+export default burguerIngredient;

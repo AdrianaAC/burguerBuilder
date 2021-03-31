@@ -12,10 +12,7 @@ import * as actions from '../../store/actions/index';
 
 
 const burguerBuilder = props => {
-  // constructor(props) {
-  //     super(props);
-  //     this.state = {...}
-  // }
+ 
   const [purchasing, setPurchasing] = useState(false);
 
   useEffect(() => {
@@ -79,8 +76,8 @@ const burguerBuilder = props => {
       <OrderSumary
         ingredients={props.ings}
         price={props.price}
-        purchaseCancelled={purchaseCancelHandler}
-        purchaseContinued={purchaseContinueHandler}
+        orderCanceled={purchaseCancelHandler}
+        orderContinued={purchaseContinueHandler}
       />
     );
   }

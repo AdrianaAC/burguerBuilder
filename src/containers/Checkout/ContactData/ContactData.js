@@ -166,7 +166,7 @@ const contactData = props => {
         </Button>
       </form>
     );
-    if (this.props.loading) {
+    if (props.loading) {
       form = <Spinner />;
     }
     return (

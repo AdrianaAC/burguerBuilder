@@ -113,9 +113,9 @@ const auth = props => {
       {errorMessage}
       <form onSubmit={submitHandler}>
         {form}
-        <Button btnType="Success">SUBMIT</Button>
+        <Button buttonType="Success">SUBMIT</Button>
       </form>
-      <Button clicked={switchAuthModeHandler} btnType="Danger">
+      <Button clicked={switchAuthModeHandler} buttonType="Danger">
         SWITCH TO {isSignup ? 'SIGNIN' : 'SIGNUP'}
       </Button>
     </div>
